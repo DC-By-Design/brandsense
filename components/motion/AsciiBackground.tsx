@@ -27,6 +27,10 @@ export function AsciiBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Capture as non-null locals so nested functions don't lose the narrowing
+    const c2d: CanvasRenderingContext2D = ctx;
+    const el: HTMLCanvasElement = canvas;
+
     let animId: number;
     let cols = 0;
     let rows = 0;
@@ -47,10 +51,10 @@ export function AsciiBackground() {
     }
 
     function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      cols = Math.ceil(canvas.width / CELL) + 1;
-      rows = Math.ceil(canvas.height / CELL) + 1;
+      el.width = window.innerWidth;
+      el.height = window.innerHeight;
+      cols = Math.ceil(el.width / CELL) + 1;
+      rows = Math.ceil(el.height / CELL) + 1;
 
       // Preserve existing cells, fill new ones
       const next: Cell[][] = [];
@@ -64,10 +68,10 @@ export function AsciiBackground() {
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `${CELL - 4}px "GeistMono", "Courier New", monospace`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      c2d.clearRect(0, 0, el.width, el.height);
+      c2d.font = `${CELL - 4}px "GeistMono", "Courier New", monospace`;
+      c2d.textAlign = "center";
+      c2d.textBaseline = "middle";
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
