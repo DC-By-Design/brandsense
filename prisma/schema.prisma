@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model BrandGuideline {
+  id          String   @id @default(cuid())
+  userId      String
+  label       String
+  description String?
+  fileUrl     String
+  fileName    String
+  fileSize    Int
+  isPlatform  Boolean  @default(false)
+  brandData   Json?    // extracted brand tokens from AI parsing
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sessions AnalysisSession[]
+
+  @@index([userId])
+}
+
+model AnalysisSession {
+  id        String   @id @default(cuid())
+  userId    String
+  assetType String
+  fileName  String?
+  assetUrl  String?
+  context   String?
+  result    Json
+  savedAt   DateTime @default(now())
+
+  guidelineId String?
+  guideline   BrandGuideline? @relation(fields: [guidelineId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([savedAt])
+}
