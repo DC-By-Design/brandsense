@@ -95,8 +95,8 @@ export function AsciiBackground() {
           const alpha = cell.alpha * OPACITY;
           if (alpha < 0.002) continue;
 
-          ctx.fillStyle = `rgba(40,40,40,${alpha})`;
-          ctx.fillText(
+          c2d.fillStyle = `rgba(40,40,40,${alpha})`;
+          c2d.fillText(
             cell.char,
             c * CELL + CELL / 2,
             r * CELL + CELL / 2
